@@ -1,25 +1,18 @@
 import math
-import random
 from typing import List, Tuple, Set, Optional
 
 Edge = Tuple[int, int]
 
 
-#неориентированное ребро
 def norm_edge(a: int, b: int) -> Edge:
     return (a, b) if a < b else (b, a)
 
-#преобразуем цикл-тур в множество неориентированных ребер
+
 def tour_to_edges(tour: List[int]) -> Set[Edge]:
     n = len(tour)
     return {norm_edge(tour[i], tour[(i + 1) % n]) for i in range(n)}
 
-#ищем длину гамильтонова цикла
-def tour_length(tour: List[int], dist: List[List[float]]) -> float:
-    n = len(tour)
-    return sum(dist[tour[i]][tour[(i + 1) % n]] for i in range(n))
 
-#список смежности
 def adjacency_list(n: int, edges: Set[Edge]) -> List[List[int]]:
     adj = [[] for _ in range(n)]
     for a, b in edges:
@@ -27,15 +20,14 @@ def adjacency_list(n: int, edges: Set[Edge]) -> List[List[int]]:
         adj[b].append(a)
     return adj
 
-#ровно 1 гамильтонов цикл (связный граф + степени 2 у вершин)
+
 def single_tour_check(n: int, edges: Set[Edge]) -> bool:
     if len(edges) != n:
         return False
 
     adj = adjacency_list(n, edges)
-    for v in range(n):
-        if len(adj[v]) != 2:
-            return False
+    if any(len(adj[v]) != 2 for v in range(n)):
+        return False
 
     seen = set()
     stack = [0]
@@ -48,13 +40,12 @@ def single_tour_check(n: int, edges: Set[Edge]) -> bool:
 
     return len(seen) == n
 
-#восстанавливаем тур из ребер по циклу
+
 def edges_to_tour(n: int, edges: Set[Edge]) -> Optional[List[int]]:
     if not single_tour_check(n, edges):
         return None
 
     adj = adjacency_list(n, edges)
-
     tour = [0]
     prev = -1
     curr = 0
@@ -76,7 +67,7 @@ def edges_to_tour(n: int, edges: Set[Edge]) -> Optional[List[int]]:
 
     return tour if len(tour) == n else None
 
-#начальный тур методом ближайшего соседа
+
 def nearest_neighbor_tour(dist: List[List[float]], start: int = 0) -> List[int]:
     n = len(dist)
     unvisited = set(range(n))
@@ -93,7 +84,18 @@ def nearest_neighbor_tour(dist: List[List[float]], start: int = 0) -> List[int]:
 
     return tour
 
-# матрица евклидовых расстояний
+
+def tour_length(tour: List[int], dist: List[List[float]]) -> float:
+    n = len(tour)
+    return sum(dist[tour[i]][tour[(i + 1) % n]] for i in range(n))
+
+
+def path_length(path: List[int], dist: List[List[float]]) -> float:
+    if len(path) < 2:
+        return 0.0
+    return sum(dist[path[i]][path[i + 1]] for i in range(len(path) - 1))
+
+
 def build_distance_matrix(points: List[Tuple[float, float]]) -> List[List[float]]:
     n = len(points)
     dist = [[0.0] * n for _ in range(n)]
