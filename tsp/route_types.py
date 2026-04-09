@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+#класс места
 
 @dataclass(frozen=True)
 class Place:

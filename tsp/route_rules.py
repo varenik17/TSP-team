@@ -11,11 +11,8 @@ def food_positions(route: List[int], places: List[Place], start_index: int) -> L
             positions.append(pos)
     return positions
 
-
+# если еда идет подряд, то пытаемся переставить между точками любую другую не еду
 def try_separate_food_stops(route: List[int], places: List[Place], start_index: int) -> List[int]:
-    """
-    Если food-точки стоят подряд, пробуем переставить между ними любую не-food точку.
-    """
     if has_two_nonconsecutive_food_stops(route, places, start_index):
         return route[:]
 
@@ -30,10 +27,10 @@ def try_separate_food_stops(route: List[int], places: List[Place], start_index: 
                     result[i + 1], result[j] = result[j], result[i + 1]
                     if has_two_nonconsecutive_food_stops(result, places, start_index):
                         return result
-                    # откатываемся назад
+                    # откатываемся
                     result[i + 1], result[j] = result[j], result[i + 1]
 
-            # ищем не-food точку раньше по маршруту, но не старт
+            # ищем не-food точку раньше по маршруту (не старт)
             for j in range(1, i):
                 if not is_food_place(places[result[j]]):
                     result[i], result[j] = result[j], result[i]

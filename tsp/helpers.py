@@ -3,6 +3,7 @@ from typing import List, Tuple, Set, Optional
 
 Edge = Tuple[int, int]
 
+# вся математика
 
 def norm_edge(a: int, b: int) -> Edge:
     return (a, b) if a < b else (b, a)

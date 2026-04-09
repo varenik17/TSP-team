@@ -71,7 +71,7 @@ def food_count(route: List[int], places: List[Place], start_index: int) -> int:
             count += 1
     return count
 
-
+# правило на непоследовательность точек с едой
 def has_two_nonconsecutive_food_stops(route: List[int], places: List[Place], start_index: int) -> bool:
     food_positions = []
 

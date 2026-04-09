@@ -2,13 +2,8 @@ from typing import List, Tuple
 
 from .helpers import path_length
 
-
+# режет цикл по ребру чтобы начало было с 0 и путь был наикратчайшим
 def cycle_to_open_path(cycle: List[int], dist: List[List[float]], start_node: int) -> Tuple[List[int], float]:
-    """
-    Разрезает цикл в одном ребре так, чтобы:
-    - маршрут начинался со start_node
-    - путь был как можно короче
-    """
     n = len(cycle)
     if n == 0:
         return [], 0.0

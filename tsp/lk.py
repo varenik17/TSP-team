@@ -11,6 +11,7 @@ from .helpers import (
     tour_length,
 )
 
+# Лин-Керниган - только оптимизация порядка
 
 class LinKernighanSolver:
     def __init__(

@@ -9,6 +9,7 @@ from .constraints import (
 )
 from .lk import LinKernighanSolver
 
+ #управление всеми процессами ( селектор, Лин-Керниган, цикл в путь, ограничения, корректировки)
 
 def reorder_with_fixed_start(route: List[int], start_index: int) -> List[int]:
     if start_index not in route:

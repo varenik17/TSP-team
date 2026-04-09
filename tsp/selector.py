@@ -7,20 +7,15 @@ from .constraints import (
     food_count,
 )
 
-
+#чем меньше значение - тем лучше кандидат
+#учитываю расстояние, время пребывания, стоимость
 def candidate_value(
     last_idx: int,
     candidate_idx: int,
     dist: List[List[float]],
     places: List[Place],
 ) -> float:
-    """
-    Чем меньше значение, тем лучше кандидат.
-    Учитываем:
-    - расстояние до новой точки
-    - время пребывания
-    - стоимость посещения
-    """
+
     travel = dist[last_idx][candidate_idx]
     visit_time = places[candidate_idx].visit_time_hours
     visit_cost = places[candidate_idx].visit_cost
@@ -64,6 +59,7 @@ def pick_best_candidate(
     return best
 
 
+# допустимый маршрут (фикс старта, 2 еды, добираем остальное)
 def greedy_select_places(
     dist: List[List[float]],
     places: List[Place],
@@ -72,19 +68,13 @@ def greedy_select_places(
     max_budget: float,
     speed_kmh: float,
 ) -> List[int]:
-    """
-    Строит допустимый маршрут:
-    1. стартовая точка фиксирована
-    2. обязательно включает минимум 2 food-места, если это возможно
-    3. затем добирает остальные точки
-    """
     route = [start_index]
     all_candidates = [i for i in range(len(places)) if i != start_index]
 
     food_candidates = [i for i in all_candidates if is_food_place(places[i])]
     other_candidates = [i for i in all_candidates if not is_food_place(places[i])]
 
-    #стараемся включить 2 food-точки
+    # стараемся включить 2 food-точки
     while food_count(route, places, start_index) < 2:
         best_food = pick_best_candidate(
             current_route=route,
@@ -105,7 +95,7 @@ def greedy_select_places(
         if best_food in other_candidates:
             other_candidates.remove(best_food)
 
-    #добираем все остальные допустимые точки
+    # добираем все остальные допустимые точки
     remaining = [i for i in all_candidates if i not in route]
 
     while True:
